@@ -34,6 +34,8 @@ public class ChessMatch {
 		Position source = sourcePosition.toPosition(); //posi��o de origem
 		Position target = targetPosition.toPosition(); //posi��o de destino
 		validateSourcePosition(source);
+		validateTargetPosition(source, target);
+		
 		Piece capturedPiece = makeMove(source, target); //makeMove realiza o movimento da pe�a
 		return (ChessPiece)capturedPiece; //tem que fazer dowcasting pq a pe�a capturada � do tipo piece
 	}
@@ -57,6 +59,14 @@ public class ChessMatch {
 			throw new ChessException("Nao existe movimentos possiveis para a peca escolhida");
 		}
 	}
+	
+	private void validateTargetPosition(Position source, Position target) {
+		if(!board.piece(source).possibleMove(target)) { //se pra peça de origem a posição de destino não é um movimento possivel significa que voce não pode mexer pra lá
+			throw new ChessException("A peca escolhida não pode se mover para a posicao de destino!");
+			
+		}
+		
+		}
 	
 	//esse metodo recebe as coordenadas do xadrez
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
