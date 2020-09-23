@@ -11,7 +11,7 @@ public class ChessMatch {
 	private Board board;
 	
 	//metodo initialSetup = na hora que foir iniciada a partida
-	//vai ser criado um tabuleiro (board) 8 por 8 e chama o  initialSetup() e coloca o R da classe rook na posição informada
+	//vai ser criado um tabuleiro (board) 8 por 8 e chama o  initialSetup() e coloca o R da classe rook na posiï¿½ï¿½o informada
 
 	public ChessMatch() {
 		board = new Board(8, 8);
@@ -28,42 +28,41 @@ public class ChessMatch {
 		return mat;
 	}
 	
-	//mover peças
+	//mover peï¿½as
 	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
-		//convertendo essas duas posições (source, target) para posições da matriz
-		Position source = sourcePosition.toPosition(); //posição de origem
-		Position target = targetPosition.toPosition(); //posição de destino
+		//convertendo essas duas posiï¿½ï¿½es (source, target) para posiï¿½ï¿½es da matriz
+		Position source = sourcePosition.toPosition(); //posiï¿½ï¿½o de origem
+		Position target = targetPosition.toPosition(); //posiï¿½ï¿½o de destino
 		validateSourcePosition(source);
-		Piece capturedPiece = makeMove(source, target); //makeMove realiza o movimento da peça
-		return (ChessPiece)capturedPiece; //tem que fazer dowcasting pq a peça capturada é do tipo piece
+		Piece capturedPiece = makeMove(source, target); //makeMove realiza o movimento da peï¿½a
+		return (ChessPiece)capturedPiece; //tem que fazer dowcasting pq a peï¿½a capturada ï¿½ do tipo piece
 	}
 	
 	private Piece makeMove(Position source, Position target) {
-		Piece p = board.removePiece(source); //retirou peça que estava na posição de origem
+		Piece p = board.removePiece(source); //retirou peï¿½a que estava na posiï¿½ï¿½o de origem
 		Piece capturedPiece = board.removePiece(target);
-		board.placePiece(p, target); // remove a possivel peça que esteja na posição de destino e ela por padrão será a peça capturada
+		board.placePiece(p, target); // remove a possivel peï¿½a que esteja na posiï¿½ï¿½o de destino e ela por padrï¿½o serï¿½ a peï¿½a capturada
 		return capturedPiece;
 		
-		//esse metodo remove a peça de origem (para move-la) e também pode remover a peça de destino, como se o jogador tivesse capturado a peça do oponente
+		//esse metodo remove a peï¿½a de origem (para move-la) e tambï¿½m pode remover a peï¿½a de destino, como se o jogador tivesse capturado a peï¿½a do oponente
 	}
 	
 	
 	
 	private void validateSourcePosition(Position position) {
 		if(!board.thereIsApice(position)) {
-			throw new ChessException("Não existe peca na posicao de origem!");
+			throw new ChessException("Nï¿½o existe peca na posicao de origem!");
+		}
+		if (!board.piece(position).isThereAnyPossibleMove()) {
+			throw new ChessException("Nao existe movimentos possiveis para a peca escolhida");
 		}
 	}
-	
-	
-	
-	
 	
 	//esse metodo recebe as coordenadas do xadrez
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition());
 	}
-	//metodo responsavel por iniciar a partida de xadrez, colocando as peças no tabuleiro
+	//metodo responsavel por iniciar a partida de xadrez, colocando as peï¿½as no tabuleiro
 	private void initialSetup() {
 		placeNewPiece('c', 1, new Rook(board, Color.WHITE));
         placeNewPiece('c', 2, new Rook(board, Color.WHITE));
