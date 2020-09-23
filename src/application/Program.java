@@ -26,10 +26,13 @@ public class Program {
 				System.out.print("Origem: ");
 				ChessPosition source = UI.readChessPosition(sc);
 				
+				boolean[][] possibleMoves = chessMatch.possibleMoves(source);
+				UI.clearScreen();
+				UI.printBoard(chessMatch.getPieces(), possibleMoves); //imprime o tabuleiro só que colorindo as posições que a peça pode ir
 				System.out.println();
 				System.out.println("Destino: ");
 				ChessPosition target = UI.readChessPosition(sc);
-				
+					
 				ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
 				
 			}
