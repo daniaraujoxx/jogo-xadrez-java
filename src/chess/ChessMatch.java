@@ -1,5 +1,8 @@
 package chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
@@ -11,6 +14,9 @@ public class ChessMatch {
 	private int turn;
 	private Color currentPlayer;
 	private Board board;
+
+	private List<Piece> piecesOntheBoard = new ArrayList<>();
+	private List<Piece> capturedPieces = new ArrayList<>();
 
 	// metodo initialSetup = na hora que foir iniciada a partida
 	// vai ser criado um tabuleiro (board) 8 por 8 e chama o initialSetup() e coloca
@@ -26,10 +32,11 @@ public class ChessMatch {
 	public int getTurn() {
 		return turn;
 	}
-	
+
 	public Color getCurrentPlayer() {
 		return currentPlayer;
 	}
+
 	public ChessPiece[][] getPieces() {
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
 		for (int i = 0; i < board.getRows(); i++) {
@@ -39,8 +46,9 @@ public class ChessMatch {
 		}
 		return mat;
 	}
-	
-	//essa funçao serve para que na program impimir as posições possiveis a partir de uma posição de origem
+
+	// essa funçao serve para que na program impimir as posições possiveis a partir
+	// de uma posição de origem
 	public boolean[][] possibleMoves(ChessPosition sourcePosition) {
 		Position position = sourcePosition.toPosition();
 		validateSourcePosition(position);
@@ -62,8 +70,12 @@ public class ChessMatch {
 	private Piece makeMove(Position source, Position target) {
 		Piece p = board.removePiece(source); // retirou pe�a que estava na posi��o de origem
 		Piece capturedPiece = board.removePiece(target);
-		board.placePiece(p, target); // remove a possivel pe�a que esteja na posi��o de destino e ela por padr�o ser�
-										// a pe�a capturada
+		board.placePiece(p, target); // remove a possivel peca que esteja na posi��o de destino e ela por padrao  ser�   a peca capturada
+
+		if(capturedPiece != null) {
+			piecesOntheBoard.remove(capturedPiece);
+			capturedPieces.add(capturedPiece);
+		}
 		return capturedPiece;
 
 		// esse metodo remove a pe�a de origem (para move-la) e tamb�m pode remover a
@@ -74,11 +86,13 @@ public class ChessMatch {
 		if (!board.thereIsApice(position)) {
 			throw new ChessException("Nao existe peca na posicao de origem!");
 		}
-		if(currentPlayer != ((ChessPiece)board.piece(position)).getColor()) { //se essa cor for diferente do jogador atual, entao eh uma peca do adversario
+		if (currentPlayer != ((ChessPiece) board.piece(position)).getColor()) { // se essa cor for diferente do jogador
+																				// atual, entao eh uma peca do
+																				// adversario
 			throw new ChessException("Essa peca nao eh sua!");
-			
+
 		}
-			if (!board.piece(position).isThereAnyPossibleMove()) {
+		if (!board.piece(position).isThereAnyPossibleMove()) {
 			throw new ChessException("Nao existe movimentos possiveis para a peca escolhida");
 		}
 	}
@@ -92,16 +106,18 @@ public class ChessMatch {
 		}
 
 	}
-	//troca de turno
+
+	// troca de turno
 	private void nextTurn() {
 		turn++;
 		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
-		//se o jogador for branco então na proxima vai ser o jogador preto
+		// se o jogador for branco então na proxima vai ser o jogador preto
 	}
 
 	// esse metodo recebe as coordenadas do xadrez
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition());
+		piecesOntheBoard.add(piece);
 	}
 
 	// metodo responsavel por iniciar a partida de xadrez, colocando as pe�as no
