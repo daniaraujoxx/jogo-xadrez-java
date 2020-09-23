@@ -13,7 +13,7 @@ public class Rook extends ChessPiece {
 	}
 	@Override
 	public String toString() {
-		return "R"; // essa letra vai aparecer no tabuleiro
+		return "T"; // essa letra vai aparecer no tabuleiro
 		
 	}
 	
