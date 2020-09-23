@@ -51,7 +51,7 @@ public class ChessMatch {
 	
 	private void validateSourcePosition(Position position) {
 		if(!board.thereIsApice(position)) {
-			throw new ChessException("Não existe peça na posição de origem!");
+			throw new ChessException("Não existe peca na posicao de origem!");
 		}
 	}
 	

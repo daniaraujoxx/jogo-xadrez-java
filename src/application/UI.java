@@ -32,8 +32,15 @@ public class UI {
 	public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+	
+	// https://stackoverflow.com/questions/2979383/java-clear-the-console
+	//limpa o console
+	public static void clearScreen() {
+	System.out.print("\033[H\033[2J");
+	System.out.flush();
+	}
 
-	public static ChessPosition readChessPosition(Scanner sc) { //esse metodo esta recebendo o scanner l· da program, la est· sendo instanciado e neste metodo est· sendo recebido como argumento e a leitura da posiÁ„o vai ser feita usando o scanner
+	public static ChessPosition readChessPosition(Scanner sc) { //esse metodo esta recebendo o scanner l√° da program, la est√° sendo instanciado e neste metodo est√° sendo recebido como argumento e a leitura da posi√ß√£o vai ser feita usando o scanner
 		try {
 		String s = sc.nextLine();
 		char column = s.charAt(0);
@@ -42,7 +49,7 @@ public class UI {
 		
 		}
 		catch (RuntimeException e) {
-			throw new InputMismatchException("Erro ao ler posiÁ„o de xadrez. Valores v·lidos s„o de a1 atÈ h8");
+			throw new InputMismatchException("Erro ao ler posicao de xadrez. Valores validos sao de a1 ate h8");
 		}
 	}
 	
