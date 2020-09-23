@@ -8,6 +8,8 @@ import chess.pieces.Rook;
 
 public class ChessMatch {
 
+	private int turn;
+	private Color currentPlayer;
 	private Board board;
 
 	// metodo initialSetup = na hora que foir iniciada a partida
@@ -16,9 +18,18 @@ public class ChessMatch {
 
 	public ChessMatch() {
 		board = new Board(8, 8);
+		turn = 1;
+		currentPlayer = Color.WHITE;
 		initialSetup();
 	}
 
+	public int getTurn() {
+		return turn;
+	}
+	
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
 	public ChessPiece[][] getPieces() {
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
 		for (int i = 0; i < board.getRows(); i++) {
@@ -43,8 +54,8 @@ public class ChessMatch {
 		Position target = targetPosition.toPosition(); // posi��o de destino
 		validateSourcePosition(source);
 		validateTargetPosition(source, target);
-
 		Piece capturedPiece = makeMove(source, target); // makeMove realiza o movimento da pe�a
+		nextTurn();
 		return (ChessPiece) capturedPiece; // tem que fazer dowcasting pq a pe�a capturada � do tipo piece
 	}
 
@@ -61,9 +72,13 @@ public class ChessMatch {
 
 	private void validateSourcePosition(Position position) {
 		if (!board.thereIsApice(position)) {
-			throw new ChessException("N�o existe peca na posicao de origem!");
+			throw new ChessException("Nao existe peca na posicao de origem!");
 		}
-		if (!board.piece(position).isThereAnyPossibleMove()) {
+		if(currentPlayer != ((ChessPiece)board.piece(position)).getColor()) { //se essa cor for diferente do jogador atual, entao eh uma peca do adversario
+			throw new ChessException("Essa peca nao eh sua!");
+			
+		}
+			if (!board.piece(position).isThereAnyPossibleMove()) {
 			throw new ChessException("Nao existe movimentos possiveis para a peca escolhida");
 		}
 	}
@@ -76,6 +91,12 @@ public class ChessMatch {
 
 		}
 
+	}
+	//troca de turno
+	private void nextTurn() {
+		turn++;
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
+		//se o jogador for branco então na proxima vai ser o jogador preto
 	}
 
 	// esse metodo recebe as coordenadas do xadrez
