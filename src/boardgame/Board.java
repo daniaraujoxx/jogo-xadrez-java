@@ -46,6 +46,20 @@ public class Board {
 		// pegando a matriz na posição dada e atribuir a ela a peça informada
 		piece.position = position;
 	}
+	
+	public Piece removePiece(Position position) {
+		if(!positionExists(position)) {
+			throw new BoardException("Posição invalida!");
+
+		}
+		if(piece(position) == null) {
+			return null;
+		}
+		Piece aux = piece(position);
+		aux.position = null; //retira peça do tabuleiro
+		pieces[position.getRow()][position.getColumn()] = null;
+		return aux;
+	}
 
 	//metodo auxiliar
 	private boolean positionExists(int row, int column) {
