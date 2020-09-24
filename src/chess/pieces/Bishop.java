@@ -6,7 +6,7 @@ import chess.ChessPiece;
 import chess.Color;
 
 public class Bishop extends ChessPiece {
-
+//bispo se move na diagonal
 	public Bishop(Board board, Color color) {
 		super(board, color);
 		// TODO Auto-generated constructor stub
