@@ -94,7 +94,8 @@ public class ChessMatch {
 	}
 
 	private Piece makeMove(Position source, Position target) {
-		Piece p = board.removePiece(source); // retirou pe�a que estava na posi��o de origem
+		ChessPiece p = (ChessPiece)board.removePiece(source); // retirou pe�a que estava na posi��o de origem
+		p.increaseMoveCount();
 		Piece capturedPiece = board.removePiece(target);
 		board.placePiece(p, target); // remove a possivel peca que esteja na posi��o de destino e ela por padrao ser�
 										// a peca capturada
@@ -111,7 +112,8 @@ public class ChessMatch {
 
 	// desfazer movimento para nao poder se colocar em cheque
 	private void undoMove(Position source, Position target, Piece capturedPiece) {
-		Piece p = board.removePiece(target); // tira a peca que mexeu la do destino
+		ChessPiece p = (ChessPiece)board.removePiece(target); // tira a peca que mexeu la do destino
+		p.decreaseMoveCount();
 		board.placePiece(p, source); // devolve a peca para a posicao de origem
 
 		if (capturedPiece != null) {
