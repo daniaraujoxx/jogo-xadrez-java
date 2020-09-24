@@ -8,7 +8,7 @@ public class Board {
 
 	public Board(int rows, int columns) {
 		if(rows < 1 || columns < 1) {
-			throw new BoardException("Erro ao criar tabuleiro, é necessário pelo menos uma linha e uma coluna");
+			throw new BoardException("Erro ao criar tabuleiro, eh necessario pelo menos uma linha e uma coluna");
 		}
 		this.rows = rows;
 		this.columns = columns;
@@ -26,37 +26,37 @@ public class Board {
 
 	public Piece piece(int row, int column) {
 		if(!positionExists(row, column)) {
-			throw new BoardException("Posição invalida!");
+			throw new BoardException("Posicao invalida!");
 		}
 		return pieces[row][column];
 	}
 
 	public Piece piece(Position position) {
 		if(!positionExists(position)) {
-			throw new BoardException("Posição invalida!");
+			throw new BoardException("Posicao invalida!");
 		}
 		return pieces[position.getRow()][position.getColumn()];
 	}
 
 	public void placePiece(Piece piece, Position position) {
 		if(thereIsApice(position)) {
-			throw new BoardException("Já existe uma peça na posição: " + position);
+			throw new BoardException("Ja existe uma peca na posicao: " + position);
 		}
 		pieces[position.getRow()][position.getColumn()] = piece;
-		// pegando a matriz na posição dada e atribuir a ela a peça informada
+		// pegando a matriz na posiï¿½ï¿½o dada e atribuir a ela a peï¿½a informada
 		piece.position = position;
 	}
 	
 	public Piece removePiece(Position position) {
 		if(!positionExists(position)) {
-			throw new BoardException("Posição invalida!");
+			throw new BoardException("Posicao invalida!");
 
 		}
 		if(piece(position) == null) {
 			return null;
 		}
 		Piece aux = piece(position);
-		aux.position = null; //retira peça do tabuleiro
+		aux.position = null; //retira peï¿½a do tabuleiro
 		pieces[position.getRow()][position.getColumn()] = null;
 		return aux;
 	}
@@ -70,13 +70,13 @@ public class Board {
 		return positionExists(position.getRow(), position.getColumn());
 	}
 	
-	//testar se tem uma peça na posição informada
+	//testar se tem uma peï¿½a na posiï¿½ï¿½o informada
 	public boolean thereIsApice(Position position) {
 		if(!positionExists(position)) {
-			throw new BoardException("Posição invalida!");
+			throw new BoardException("Posicao invalida!");
 		}
 		return piece(position) != null;
-		// piece(position) esta declarado acima e irá retornar a peça da matriz em x posição, se essa peça for
-		//diferente de nulo significa que tem uma peça nessa posição.
+		// piece(position) esta declarado acima e irï¿½ retornar a peï¿½a da matriz em x posiï¿½ï¿½o, se essa peï¿½a for
+		//diferente de nulo significa que tem uma peï¿½a nessa posiï¿½ï¿½o.
 	}
 }
