@@ -1,5 +1,6 @@
 package chess;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,8 +21,11 @@ public class ChessMatch {
 	private Color currentPlayer;
 	private Board board;
 	private boolean check;
-	private boolean checkMate;
+	private boolean checkMate;	
 	private ChessPiece enPassantVulnerable;
+	private ChessPiece promoted;
+
+	
 	private List<Piece> piecesOntheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
 
@@ -56,6 +60,9 @@ public class ChessMatch {
 		return null;
 	}
 
+	public ChessPiece getPromoted() {
+		return promoted;
+	}
 	public ChessPiece[][] getPieces() {
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
 		for (int i = 0; i < board.getRows(); i++) {
@@ -89,6 +96,15 @@ public class ChessMatch {
 		}
 		ChessPiece movedPiece = (ChessPiece) board.piece(target);
 
+		//promocao especial
+		promoted = null;
+		if(movedPiece instanceof Pawn) {
+			if((movedPiece.getColor() == Color.WHITE && target.getRow() == 0 || (movedPiece.getColor() == Color.BLACK && target.getRow() == 7))){
+				promoted = (ChessPiece)board.piece(target);
+				promoted = replacePromotedPiece("Q"); //esta trocando o peao por uma peca mais poderosa
+			}
+		}
+		
 		check = (testeCheck(opponent(currentPlayer))) ? true : false; // expressao ternaria
 		// se a jogada que eu fiz deixou meu oponente em checkmate o jogo vai ter que
 		// acabar
@@ -105,6 +121,32 @@ public class ChessMatch {
 		enPassantVulnerable = movedPiece;
 
 		return (ChessPiece) capturedPiece; // tem que fazer dowcasting pq a pe�a capturada � do tipo piece
+	}
+	public ChessPiece replacePromotedPiece(String type) {
+		if(promoted == null) {
+			throw new IllegalStateException("Nao ha peca para ser promovida");
+		}
+		if(!type.equals("B") && !type.equals("C") && !type.equals("T") & !type.contentEquals("Q")) { //equals = pra comparar se um tipo eh igual a outro
+			throw new InvalidParameterException("Valor invalido");
+	}
+	Position pos = promoted.getChessPosition().toPosition(); //removeu a peca que tava na posicao
+	Piece p = board.removePiece(pos); //guardei na variavel p
+	piecesOntheBoard.remove(p);
+	
+	ChessPiece newPiece = newPiece(type, promoted.getColor()); 
+	board.placePiece(newPiece, pos);
+	piecesOntheBoard.add(newPiece);
+	
+	return newPiece;
+	
+	}
+	//metodo auxiliar para fazer a troca de peca
+	private ChessPiece newPiece(String type, Color color) {
+		if(type.equals("B")) return new Bishop(board, color);
+		if(type.equals("C")) return new Knight(board, color);
+		if(type.equals("Q")) return new Queen(board, color);
+		return new Rook(board, color);
+
 	}
 
 	private Piece makeMove(Position source, Position target) {

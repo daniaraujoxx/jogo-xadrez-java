@@ -40,6 +40,12 @@ public class Program {
 					captured.add(capturedPiece); 
 					//sempre que executar um movimento e esse movimento resultar em uma peca capturada, add ela na lista de pecas capturadas 
 				}
+				//promover peca
+				if(chessMatch.getPromoted() != null) {
+					System.out.println("Voce quer trocar seu peao por qual dessas pecas? (B/C/T/Q)");
+					String type = sc.nextLine();
+					chessMatch.replacePromotedPiece(type);
+				}
 			}
 			catch (ChessException e) {
 				System.out.println(e.getMessage());
